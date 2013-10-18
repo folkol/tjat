@@ -17,11 +17,10 @@ public class Client {
         System.out.print("Nickname: ");
         String nickname = console.readLine();
 
-        String greeting = "NICK " + nickname + "\n";
-
         Socket socket = new Socket(serverAddress, 666);
         OutputStream outputStream = socket.getOutputStream();
-        outputStream.write(greeting.getBytes("UTF-8"));
+        outputStream.write(nickname.getBytes("UTF-8"));
+        outputStream.write("\n".getBytes("UTF-8"));
         outputStream.flush();
 
         final BufferedReader fromServer = new BufferedReader(new InputStreamReader(socket.getInputStream()));
@@ -44,9 +43,8 @@ public class Client {
         thread.setDaemon(true);
         thread.start();
 
-        System.out.println(":> ");
-        System.out.flush();
         while(true) {
+            System.out.print(":> ");
             String message = console.readLine() + "\n";
             if("QUIT".equals(message)) break;
             outputStream.write(message.getBytes("UTF-8"));
